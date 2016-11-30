@@ -1,0 +1,18 @@
+image: docker
+
+stages:
+- build
+
+build: &build
+  before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:
+  - docker build -t $CI_REGISTRY_IMAGE:wheezy wheezy
+  - docker build -t $CI_REGISTRY_IMAGE:jessie jessie
+  - docker tag $CI_REGISTRY_IMAGE:jessie $CI_REGISTRY_IMAGE:latest
+  - docker push $CI_REGISTRY_IMAGE:wheezy
+  - docker push $CI_REGISTRY_IMAGE:jessie
+  - docker push $CI_REGISTRY_IMAGE:latest
+  stage: build
+  tags:
+  - docker-socket
