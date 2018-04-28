@@ -1,4 +1,4 @@
-DEBIAN_TAGS := jessie wheezy stretch
+DEBIAN_TAGS := jessie wheezy stretch buster
 
 .PHONY: all
 all:
