@@ -1,5 +1,7 @@
-DEBIAN_TAGS := jessie wheezy stretch buster
+DEBIAN_TAGS := jessie stretch buster bullseye
 
 .PHONY: all
-all:
-	$(foreach tag,$(DEBIAN_TAGS), m4 -D DISTRO=debian -D TAG=$(tag) Dockerfile.m4 > $(tag)/Dockerfile ;)
+all: $(patsubst %, Dockerfile.%, $(DEBIAN_TAGS))
+
+Dockerfile.%: template.dockerfile
+	sed -e 's/DISTRO/debian/' -e 's/TAG/$(patsubst Dockerfile.%,%, $@)/' < $< > $@
